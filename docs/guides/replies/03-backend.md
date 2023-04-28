@@ -5,6 +5,7 @@ We use tRPC for the application layer, and tRPC routers for the backend code.
 ### Vocabulary
 
 Below are some commonly used terms in the tRPC ecosystem. We'll be using these terms throughout the docs, so it's good to get familiar with them and how they relate to each other.
+
 | Term | Description |
 | --- | --- |
 | [Procedure](https://trpc.io/docs/server/procedures) | tRPC's equivalent to an API endpoint - can be a query, mutation, or a subscription |
