@@ -12,7 +12,7 @@ This section will talk about how to use the new procedure in the application. We
 
 In the component where the reply feature is to be submitted, we will use the tRPC mutation to submit the reply.
 
-```tsx title=src/features/thread/components/ReplyRichText.tsx
+```tsx title=src/features/feedback/components/FeedbackCommentRichText.tsx
 import { trpc } from '~/utils/trpc'
 
 export const ReplyRichText () => {
@@ -32,7 +32,15 @@ import { useZodForm } from '~/lib/form'
 import { addReplySchema } from '~/schemas/thread'
 
 export const ReplyRichText () => {
-  const mutation = trpc.thread.reply.useMutation()
+  const utils = trpc.useContext()
+  const mutation = trpc.thread.reply.useMutation({
+    onSuccess: async () => {
+      reset()
+      // refetches posts after a comment is added
+      await utils.post.list.invalidate()
+      await utils.post.byId.invalidate({ id: postId })
+    }
+  })
 
   const {
     formState: { errors },
