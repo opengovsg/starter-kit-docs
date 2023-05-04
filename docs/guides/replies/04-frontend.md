@@ -12,8 +12,7 @@ This section will talk about how to use the new procedure in the application. We
 
 In the component where the reply feature is to be submitted, we will use the tRPC mutation to submit the reply.
 
-```tsx
-// src/features/thread/components/ReplyRichText.tsx
+```tsx title=src/features/thread/components/ReplyRichText.tsx
 import { trpc } from '~/utils/trpc'
 
 export const ReplyRichText () => {

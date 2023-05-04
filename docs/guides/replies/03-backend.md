@@ -30,8 +30,7 @@ There is already routers set up in the application, but replying to posts is a n
 
 For this feature, we will create a new router in `src/server/modules/thread/thread.router.ts`, since the feature as a whole seems to be about threads, and not just replies.
 
-```ts
-// src/server/modules/thread/thread.router.ts
+```ts title=src/server/modules/thread/thread.router.ts
 export const threadRouter = router({
   // Add queries and mutations here.
 });
@@ -43,8 +42,7 @@ Replying to a post is a mutation, and as such we will add a `reply` procedure to
 
 > 🗒️ If the new feature was a READ database action, instead of a CREATE, UPDATE, or DELETE action, the procedure would have been a `query` instead of a `mutation`.
 
-```ts
-// src/server/modules/thread/thread.router.ts
+```ts title=src/server/modules/thread/thread.router.ts
 export const threadRouter = router({
   reply: protectedProcedure // 🗒️ Exposed in src/server/trpc.ts to only allow authenticated users.
     .input(...)
@@ -54,8 +52,7 @@ export const threadRouter = router({
 
 tRPC uses `zod` under the hood, and you can provide a schema to control what is allowed in the mutation's `input`.
 
-```ts
-// src/server/modules/thread/thread.router.ts
+```ts title=src/server/modules/thread/thread.router.ts
 import { z } from 'zod'
 
 export const threadRouter = router({
@@ -73,8 +70,7 @@ export const threadRouter = router({
 
 The mutation should then create a new reply `Post` in the database:
 
-```ts
-// src/server/modules/thread/thread.router.ts
+```ts title=src/server/modules/thread/thread.router.ts
 export const threadRouter = router({
   reply: protectedProcedure.input(addReplySchema).mutation(
     async ({
@@ -125,8 +121,7 @@ export const threadRouter = router({
 
 This new router should be added to the application router, which is located in `src/server/modules/_app.ts`.
 
-```ts
-// src/server/modules/_app.ts
+```ts title=src/server/modules/_app.ts
 export const appRouter = router({
   ...
   thread: threadRouter,

@@ -44,9 +44,7 @@ model Post {
 
 The changes to add could be as follows:
 
-```prisma
-// prisma/schema.prisma
-
+```prisma title=prisma/schema.prisma
 model Post {
   // 🗒️  Previous fields still exist, just hidden for brevity
 
