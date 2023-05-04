@@ -4,7 +4,7 @@ Starter Kit uses [Vercel](https://vercel.com) as our deployment platform. Vercel
 
 Setting up Vercel for your product can be done via the deploy button:
 
-<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fopengovsg%2Fstarter-kit%2Ftree%2Fdevelop&env=DATABASE_URL,POSTMAN_API_KEY,SESSION_SECRET">
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fopengovsg%2Fstarter-kit%2Ftree%2Ftutorial&env=DATABASE_URL,POSTMAN_API_KEY,SESSION_SECRET">
   <img src="https://vercel.com/button" width={125} />
 </a>
 
