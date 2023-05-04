@@ -21,6 +21,7 @@ const sidebars = {
     {
       type: "category",
       label: "Guides",
+      collapsed: false,
       link: {
         type: "generated-index",
         title: "Guides",
@@ -42,6 +43,7 @@ const sidebars = {
     {
       type: "category",
       label: "Concepts",
+      collapsed: false,
       link: {
         type: "generated-index",
         title: "Concepts",
