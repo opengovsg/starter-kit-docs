@@ -38,6 +38,11 @@ const sidebars = {
           label: "Connecting to CockroachDB",
           id: "guides/tableplus",
         },
+        {
+          type: "doc",
+          label: "Setting up your staging environment",
+          id: "guides/staging",
+        },
       ],
     },
     {
