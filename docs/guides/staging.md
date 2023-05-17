@@ -30,7 +30,7 @@ the Environment Variables section. Add new entries for `DATABASE_URL`,
 `POSTMAN_API_KEY` and `SESSION_SECRET`, then ensure that only the Preview
 environment is checked, and only for the `staging` branch.
 
-<img src={VercelEnvBranch} />
+<img src={VercelEnv} />
 
 ## Trigger a Deployment
 
