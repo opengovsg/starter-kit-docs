@@ -200,7 +200,7 @@ Some frameworks and build tools, like Next.js, suggest that you store secrets in
 
 ## .env.test
 There is also an `env.test` file to store test-specific environment variables separate from your `.env` file. This file will be commited to version control, so you can keep your test environment variables in sync with your team. 
-See [Testing](./09-testing.md) for more information.
+See [Testing](./10-testing.md) for more information.
 
 ## Adding Environment Variables
 
