@@ -10,15 +10,15 @@ To set up Cloudflare R2, follow the steps below:
 
 1. Copy Account ID and create a bucket.
    ![](./images/storage/create-bucket.png)
-1. Create API Token with edit access. (Warning: this api token applies to all buckets)
+2. Create API Token with edit access. (Warning: this api token applies to all buckets)
    ![](./images/storage/create-api-token.png)
-1. Copy api key and secret
+3. Copy api key and secret
    ![](./images/storage/api-token-success.png)
-1. Allow public edit access to the bucket
+4. Allow public edit access to the bucket
    ![](./images/storage/allow-public-access.png)
-1. Set custom domain for the bucket (optional for development)
+5. Set custom domain for the bucket (optional for development)
    ![](./images/storage/custom-domain.png)
-1. Set CORS to allow for your domain
+6. Set CORS to allow for your domain
    ![](./images/storage/cors.png)
 
 Set the following environment variables:
