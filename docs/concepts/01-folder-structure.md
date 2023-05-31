@@ -33,7 +33,7 @@ This is a general overview of the project structure. Further down, you will find
 │     └─ trpc.ts
 ├─ .env
 ├─ .env.example
-├─ .eslintrc.json
+├─ .eslintrc.cjs
 ├─ .gitignore
 ├─ next-env.d.ts
 ├─ next.config.js
@@ -127,7 +127,7 @@ The `.env` file is used to store environment variables. See [Environment Variabl
 
 The `.env.example` file shows example environment variables based on the chosen libraries. This file should be committed to git history.
 
-### `.eslintrc.json`
+### `.eslintrc.cjs`
 
 The `.eslintrc.cjs` file is used to configure ESLint. See [ESLint Docs](https://eslint.org/docs/latest/user-guide/configuring/configuration-files) for more information.
 
