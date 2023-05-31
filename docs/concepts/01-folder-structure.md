@@ -9,6 +9,7 @@ This is a general overview of the project structure. Further down, you will find
 ├─ prisma
 │  └─ schema.prisma
 ├─ src
+│  ├─ env.mjs
 │  ├─ pages
 │  │  ├─ _app.tsx
 │  │  ├─ 404.tsx
@@ -19,7 +20,6 @@ This is a general overview of the project structure. Further down, you will find
 │  ├─ lib
 │  ├─ schemas
 │  ├─ server
-│  │  ├─ env.ts
 │  │  ├─ prisma.ts
 │  │  ├─ context.ts
 │  │  ├─ trpc.ts
@@ -33,7 +33,7 @@ This is a general overview of the project structure. Further down, you will find
 │     └─ trpc.ts
 ├─ .env
 ├─ .env.example
-├─ .eslintrc.json
+├─ .eslintrc.cjs
 ├─ .gitignore
 ├─ next-env.d.ts
 ├─ next.config.js
@@ -103,10 +103,6 @@ The `trpc.ts` file is the main configuration file for your tRPC back-end. In her
 
 The context used in tRPC requests is defined in this file. See [tRPC usage](./04-trpc.md#-srcservercontextts) for more information.
 
-#### `src/server/env.ts`
-
-Used for server-only environment variable validation and type definitions - see [Environment Variables](./08-env-variables.md).
-
 ### `src/theme`
 
 The `theme` folder contains the theme configuration for the application client, using [`@opengovsg/design-system-react`](https://www.npmjs.com/package/@opengovsg/design-system-react). See [Application Theme](./07-application-theme.md) for more information.
@@ -119,9 +115,9 @@ The `utils` folder is used to store commonly re-used utility functions.
 
 The `trpc.ts` file is the front-end entrypoint to tRPC. See [tRPC usage](./04-trpc.md#-srcutilstrpcts) for more information.
 
-### `src/browserEnv.ts`
+### `src/env.mjs`
 
-The `browserEnv.ts` file is used to expose environment variables to the client. See [Environment Variables](./08-env-variables.md) for more information.
+Used for environment variable validation and type definitions - see [Environment Variables](./08-env-variables.md).
 
 ### `.env`
 
@@ -131,9 +127,9 @@ The `.env` file is used to store environment variables. See [Environment Variabl
 
 The `.env.example` file shows example environment variables based on the chosen libraries. This file should be committed to git history.
 
-### `.eslintrc.json`
+### `.eslintrc.cjs`
 
-The `.eslintrc.json` file is used to configure ESLint. See [ESLint Docs](https://eslint.org/docs/latest/user-guide/configuring/configuration-files) for more information.
+The `.eslintrc.cjs` file is used to configure ESLint. See [ESLint Docs](https://eslint.org/docs/latest/user-guide/configuring/configuration-files) for more information.
 
 ### `next-env.d.ts`
 
@@ -150,4 +146,3 @@ The `tsconfig.json` file is used to configure TypeScript. Some non-defaults, suc
 ### `docker-compose.yml`
 
 Strictly used for local development, spins up the necessary services for the application to run. See [Getting Started](https://github.com/opengovsg/starter-kit/blob/develop/README.md) for more information.
-
