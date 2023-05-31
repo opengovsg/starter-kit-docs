@@ -21,6 +21,7 @@ const sidebars = {
     {
       type: "category",
       label: "Optional Features",
+      collapsed: false,
       link: {
         type: "generated-index",
         title: "Optional Features",
