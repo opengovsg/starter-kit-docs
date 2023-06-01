@@ -4,7 +4,7 @@ Usage of React's default `Suspense` component will cause problems for queries wh
 
 To have `Suspense` usage, please import the custom `Suspense` component from the `/components` directory.
 
-Thid component is just a thin wrapper around `Suspense` and exposes the same set of properties. For more information on `Suspense`, please refer to the official react docs [here](https://react.dev/reference/react/Suspense).
+This component is just a thin wrapper around `Suspense` and exposes the same set of properties. For more information on `Suspense`, please refer to the official react docs [here](https://react.dev/reference/react/Suspense).
 
 ## Example usage with trpc
 
