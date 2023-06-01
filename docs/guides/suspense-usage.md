@@ -1,10 +1,10 @@
 # Suspense Usage
 
-We have banned the usage of React's default `Suspense` component as it has caused problems for queries which rely on Next's `router` query parameter property. For more context, please view this PR [here] (https://github.com/opengovsg/starter-kit/pull/93)
+Usage of React's default `Suspense` component will cause problems for queries which rely on Next's `router` instance to extract a query parameter. For more context, please view this PR [here] (https://github.com/opengovsg/starter-kit/pull/93)
 
 To have `Suspense` usage, please import the custom `Suspense` component from the `/components` directory.
 
-Our component is just a thin wrapper around `Suspense` and exposes the same set of properties. For more information on `Suspense`, please refer to the official react docs [here](https://react.dev/reference/react/Suspense).
+Thid component is just a thin wrapper around `Suspense` and exposes the same set of properties. For more information on `Suspense`, please refer to the official react docs [here](https://react.dev/reference/react/Suspense).
 
 ## Example usage with trpc
 
@@ -41,7 +41,7 @@ To extend its usage to support other codes, simply add to the switch case statem
 
 ## Overriding all defaults
 
-You can override the component to render when errors are faced by using the `fallback` prop. 
+You may override the component to render when errors are faced by using the `fallback` prop. 
 
 ## Example Usage of ErrorBoundary + Suspense
 
