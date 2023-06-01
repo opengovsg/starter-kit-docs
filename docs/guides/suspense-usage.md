@@ -1,6 +1,6 @@
 # Suspense Usage
 
-Usage of React's default `Suspense` component will cause problems for queries which rely on Next's `router` instance to extract a query parameter. For more context, please view this PR [here] (https://github.com/opengovsg/starter-kit/pull/93)
+Usage of React's default `Suspense` component will cause problems for queries which rely on Next's `router` instance to extract a query parameter. For more context, please view this PR [here](https://github.com/opengovsg/starter-kit/pull/93)
 
 To have `Suspense` usage, please import the custom `Suspense` component from the `/components` directory.
 
