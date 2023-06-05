@@ -51,6 +51,11 @@ const sidebars = {
         },
         {
           type: "doc",
+          label: "Suspense and ErrorBoundary usage",
+          id: "guides/suspense-usage"
+        },
+        {
+          type: "doc",
           label: "Connecting to CockroachDB",
           id: "guides/tableplus",
         },
