@@ -129,7 +129,7 @@ The log statement above will output the following when `listMany` has been invok
 }
 ```
 
-## Default `loggerMiddleware` logged statements
+### Default `loggerMiddleware` logged statements
 
 The following actions are logged by default (see `loggerMiddleware` for more info):
 
