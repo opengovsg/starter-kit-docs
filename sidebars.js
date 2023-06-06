@@ -56,6 +56,11 @@ const sidebars = {
         },
         {
           type: "doc",
+          label: "Logging",
+          id: "guides/logging"
+        },
+        {
+          type: "doc",
           label: "Connecting to CockroachDB",
           id: "guides/tableplus",
         },
