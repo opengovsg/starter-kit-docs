@@ -220,7 +220,7 @@ The output can then be used to confirm that the UI component or page will always
 
 Using Storybook and writing stories allows us, the developer to test UI components and pages in isolation. However, it does not allow us to detect visual changes in the UI components and pages that may occur as a result of changes in the code.
 
-To detect visual changes, the application has an optional Github Action setup for CI/CD using [Chromatic](https://www.chromatic.com/), which is a visual regression testing tool that integrates with Storybook.
+To detect visual changes, the application has an optional GitHub Action setup for CI/CD using [Chromatic](https://www.chromatic.com/), which is a visual regression testing tool that integrates with Storybook.
 
 More information can be found in our [CI/CD](./12-cicd.md) documentation.
 
