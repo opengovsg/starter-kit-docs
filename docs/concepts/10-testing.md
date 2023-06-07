@@ -1,10 +1,14 @@
 # Testing
 
-This application has both integration and end-to-end tests set up.
+This application has the following test types set up:
 
-## Unit tests
+- integration (via Vitest)
+- end-to-end tests (via Playwright)
+- client interaction testing (via Storybook and Chromatic)
+- client visual regression testing (via Storybook and Chromatic)
 
-Work in progress, will be added when Storybook and Chromatic has been set up in the main application.
+This section will cover the "backend" tests (integration and e2e), as well as how to write new tests for tRPC procedures.
+For more information on the client tests, refer to the [Storybook](./11-storybook.md) and [Chromatic](./12-chromatic.md) sections.
 
 ## Integration tests
 
