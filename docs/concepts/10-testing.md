@@ -8,7 +8,7 @@ This application has the following test types set up:
 - client visual regression testing (via Storybook and Chromatic)
 
 This section will cover the "backend" tests (integration and e2e), as well as how to write new tests for tRPC procedures.
-For more information on the client tests, refer to the [Storybook](./11-storybook.md) and [Chromatic](../optional-features/chromatic.md) sections.
+For more information on the client tests, refer to the [Storybook](./11-storybook.md) and [Chromatic](../optional-features/03-chromatic.md) sections.
 
 ## Integration tests
 
