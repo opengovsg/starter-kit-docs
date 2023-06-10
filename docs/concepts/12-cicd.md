@@ -13,4 +13,4 @@ The workflow requires the following secrets to be set up in the repository:
 
 - `CHROMATIC_PROJECT_TOKEN`: The Chromatic project token. This can be found in the Chromatic project settings.
 
-For more information on how to set up Chromatic, see our guide [here](../optional-features/chromatic.md).
+For more information on how to set up Chromatic, see our guide [here](../optional-features/03-chromatic.md).
