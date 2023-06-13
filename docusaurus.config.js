@@ -4,6 +4,17 @@
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
+const { z } = require("zod");
+
+require("dotenv").config();
+
+const env = z
+  .object({
+    ALGOLIA_APP_ID: z.string().optional(),
+    ALGOLIA_SEARCH_API_KEY: z.string().optional(),
+  })
+  .parse(process.env);
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Starter Kit",
@@ -104,6 +115,14 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      ...(env.ALGOLIA_SEARCH_API_KEY
+        ? {
+            algolia: {
+              appId: env.ALGOLIA_APP_ID,
+              apiKey: env.ALGOLIA_SEARCH_API_KEY,
+            },
+          }
+        : {}),
     }),
 };
 
