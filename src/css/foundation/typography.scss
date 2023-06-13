@@ -4,6 +4,27 @@
   line-height: 4.5rem;
   letter-spacing: -0.022em;
   font-feature-settings: "tnum" on, "lnum" on, "cv05" on;
+
+  @media (max-width: 996px) {
+    font-weight: 600;
+    font-size: 2.5rem;
+    line-height: 3rem;
+    font-feature-settings: "cv05" on, "cv10" on;
+  }
+}
+
+@mixin heading {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 2.5rem;
+  line-height: 3rem;
+  letter-spacing: -0.022em;
+  font-feature-settings: "cv05" on, "cv10" on;
+
+  @media (max-width: 996px) {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
 }
 
 @mixin body-1 {

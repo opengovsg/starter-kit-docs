@@ -3,11 +3,12 @@ import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-import HomepageFeatures from "@site/src/components/HomepageFeatures";
+import HomepageFeatures from "@site/src/pages/Landing/HomepageFeatures";
 
 import styles from "./index.module.scss";
 
-import HeroImage from "@site/static/img/landing-hero.svg";
+import { HeroImage } from "./Landing/svgr/HeroImage";
+import { CallToAction } from "./Landing/CallToAction";
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -45,6 +46,7 @@ export default function Home(): JSX.Element {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
+        <CallToAction />
       </main>
     </Layout>
   );
