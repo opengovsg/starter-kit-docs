@@ -40,15 +40,3 @@
     color: $color-base-content-inverse;
   }
 }
-
-@media screen and (max-width: 996px) {
-  .hero {
-    padding: 2rem;
-  }
-}
-
-.button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}

@@ -4,6 +4,8 @@ import styles from "./styles.module.scss";
 import Link from "@docusaurus/Link";
 
 import { BiRightArrowAlt } from "react-icons/bi";
+import { LaunchImage } from "@site/src/pages/Landing/svgr/LaunchImage";
+import { WhatIsImage } from "@site/src/pages/Landing/svgr/WhatIsImage";
 
 type FeatureItem = {
   title: string;
@@ -18,7 +20,7 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: "3 steps to launch",
-    Svg: require("@site/static/img/landing-launch.svg").default,
+    Svg: LaunchImage,
     description: (
       <>All it takes is 3 easy steps to launch a StarterApp with our kit.</>
     ),
@@ -29,7 +31,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: "What is StarterKit?",
-    Svg: require("@site/static/img/landing-whatis.svg").default,
+    Svg: WhatIsImage,
     description: (
       <>
         StarterKit is a technical kit to quickly build new products from{" "}
