@@ -4,8 +4,7 @@ import styles from "./styles.module.scss";
 import Link from "@docusaurus/Link";
 
 import { BiRightArrowAlt } from "react-icons/bi";
-import { LaunchImage } from "@site/src/pages/Landing/svgr/LaunchImage";
-import { WhatIsImage } from "@site/src/pages/Landing/svgr/WhatIsImage";
+import { LaunchImage, WhatIsImage } from "../svgr";
 
 type FeatureItem = {
   title: string;
@@ -72,7 +71,7 @@ function Feature({ title, Svg, description, link }: FeatureItem) {
   );
 }
 
-export default function HomepageFeatures(): JSX.Element {
+export function HomepageFeatures(): JSX.Element {
   return (
     <section className={styles.features}>
       {FeatureList.map((props, idx) => (

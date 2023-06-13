@@ -3,12 +3,13 @@ import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-import HomepageFeatures from "@site/src/pages/Landing/HomepageFeatures";
 
 import styles from "./index.module.scss";
-
-import { HeroImage } from "./Landing/svgr/HeroImage";
-import { CallToAction } from "./Landing/CallToAction";
+import {
+  CallToAction,
+  HeroImage,
+  HomepageFeatures,
+} from "../components/Landing";
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
