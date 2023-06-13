@@ -3,20 +3,51 @@
  * and scoped locally.
  */
 
-.heroBanner {
-  padding: 4rem 0;
+@import "../css/foundation/color";
+@import "../css/foundation/typography";
+
+.hero {
+  --ifm-hero-background-color: #{$color-base-canvas-brand-subtle};
+  --ifm-hero-text-color: #{$color-base-content-strong};
   text-align: center;
-  position: relative;
-  overflow: hidden;
+
+  em {
+    color: $color-base-content-brand;
+    font-style: normal;
+  }
+
+  .hero__title {
+    @include display-1;
+  }
+
+  .hero__subtitle {
+    @include body-1;
+    color: $color-base-content-default;
+  }
+}
+
+[data-theme="dark"] {
+  .hero {
+    --ifm-hero-background-color: #{$color-base-canvas-inverse};
+    --ifm-hero-text-color: #{$color-base-content-inverse};
+  }
+
+  em {
+    color: $color-base-content-inverse;
+  }
+
+  .hero__subtitle {
+    color: $color-base-content-inverse;
+  }
 }
 
 @media screen and (max-width: 996px) {
-  .heroBanner {
+  .hero {
     padding: 2rem;
   }
 }
 
-.buttons {
+.button {
   display: flex;
   align-items: center;
   justify-content: center;
