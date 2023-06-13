@@ -49,7 +49,7 @@ Integrate Vercel with Datadog to:
 To set up the integration, follow the steps below:
 
 1. Generate a [Datadog API key](https://app.datadoghq.com/organization-settings/api-keys).
-   ::: note
+   :::note
    If you do not have proper permissions, reach out to someone who does to generate the API key
    :::
 
@@ -83,7 +83,7 @@ With the dashboards, you can proceed to add basic alerts and monitors for your a
 
 Below is an example of a Datadog monitor that tracks errors on the Vercel application and alerts a configured Slack channel. The monitor can also be found in by searching for "Starter Kit" on [Datadog's monitor page](https://app.datadoghq.com/monitors/manage).
 
-::: note
+:::note
 To add a Slack channel, or BetterUptime integration, follow their respective documentation that can be found in the Useful Resources section of this document.
 :::
 
