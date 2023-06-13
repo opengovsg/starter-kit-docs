@@ -10,9 +10,11 @@ require("dotenv").config();
 
 const env = z
   .object({
-    ALGOLIA_APP_ID: z.string().optional(),
-    ALGOLIA_SEARCH_API_KEY: z.string().optional(),
+    ALGOLIA_APP_ID: z.string(),
+    ALGOLIA_SEARCH_API_KEY: z.string(),
+    ALGOLIA_INDEX_NAME: z.string(),
   })
+  .or(z.object({}))
   .parse(process.env);
 
 /** @type {import('@docusaurus/types').Config} */
@@ -120,6 +122,7 @@ const config = {
             algolia: {
               appId: env.ALGOLIA_APP_ID,
               apiKey: env.ALGOLIA_SEARCH_API_KEY,
+              indexName: env.ALGOLIA_INDEX_NAME,
             },
           }
         : {}),
