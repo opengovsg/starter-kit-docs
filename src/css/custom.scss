@@ -49,6 +49,10 @@ html[data-theme="dark"] {
 
   // Footer
   --ifm-footer-background-color: #{$color-grey-900};
+
+  // Docsearch
+  --docsearch-highlight-color: #{$color-interaction-muted-main-active};
+  --docsearch-hit-active-color: #{$color-base-content-strong};
 }
 
 @import "./components/button.scss";
