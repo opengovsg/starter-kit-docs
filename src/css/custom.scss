@@ -33,7 +33,7 @@
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme="dark"] {
+html[data-theme="dark"] {
   --ifm-color-primary: #{$color-standard-white};
   --ifm-color-primary-dark: #{$color-interaction-muted-main-hover};
   --ifm-color-primary-darker: #{$color-interaction-muted-main-active};
@@ -41,6 +41,8 @@
   --ifm-color-primary-light: #{$color-brand-primary-400};
   --ifm-color-primary-lighter: #{$color-brand-primary-300};
   --ifm-color-primary-lightest: #{$color-brand-primary-200};
+
+  --ifm-background-surface-color: #{$color-grey-900};
 }
 
 @import "./components/button.scss";

@@ -29,7 +29,11 @@ function HomepageHeader() {
             Get Started
           </Link>
         </div>
-        <HeroImage />
+        <HeroImage
+          style={{
+            maxWidth: "852px",
+          }}
+        />
       </div>
     </header>
   );
@@ -37,7 +41,7 @@ function HomepageHeader() {
 
 export default function Home(): JSX.Element {
   return (
-    <Layout description="Description will go into a meta tag in <head />">
+    <Layout>
       <HomepageHeader />
       <main>
         <HomepageFeatures />

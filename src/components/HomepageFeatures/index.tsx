@@ -1,55 +1,70 @@
 import React from "react";
 import clsx from "clsx";
 import styles from "./styles.module.scss";
+import Link from "@docusaurus/Link";
+
+import { BiRightArrowAlt } from "react-icons/bi";
 
 type FeatureItem = {
   title: string;
   Svg: React.ComponentType<React.ComponentProps<"svg">>;
   description: JSX.Element;
+  link?: {
+    to: string;
+    label: string;
+  };
 };
 
 const FeatureList: FeatureItem[] = [
   {
-    title: "Easy to Use",
-    Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
+    title: "3 steps to launch",
+    Svg: require("@site/static/img/landing-launch.svg").default,
     description: (
-      <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
-      </>
+      <>All it takes is 3 easy steps to launch a StarterApp with our kit.</>
     ),
+    link: {
+      to: "/docs/getting-started/deploying",
+      label: "Read more about it",
+    },
   },
   {
-    title: "Focus on What Matters",
-    Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
+    title: "What is StarterKit?",
+    Svg: require("@site/static/img/landing-whatis.svg").default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        StarterKit is a technical kit to quickly build new products from{" "}
+        <Link to="https://open.gov.sg">Open Government Products</Link>,
+        Singapore.
       </>
     ),
-  },
-  {
-    title: "Powered by React",
-    Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
-    description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
-      </>
-    ),
+    link: {
+      to: "https://github.com/opengovsg/starter-kit",
+      label: "Go to the repository",
+    },
   },
 ];
 
-function Feature({ title, Svg, description }: FeatureItem) {
+function Feature({ title, Svg, description, link }: FeatureItem) {
   return (
-    <div className={clsx("col col--4")}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <h3>{title}</h3>
-        <p>{description}</p>
+    <div className={styles.feature}>
+      <div className="container">
+        <div className={clsx("row", styles.orientation)}>
+          <div className={clsx("col", styles.description)}>
+            <h3>{title}</h3>
+            <p>{description}</p>
+            {link && (
+              <Link className={styles.link} to={link.to}>
+                {link.label}
+                <BiRightArrowAlt />
+              </Link>
+            )}
+          </div>
+          <div className="col">
+            <div className="text--center">
+              <Svg className={styles.featureSvg} role="img" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -58,13 +73,9 @@ function Feature({ title, Svg, description }: FeatureItem) {
 export default function HomepageFeatures(): JSX.Element {
   return (
     <section className={styles.features}>
-      <div className="container">
-        <div className="row">
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
-          ))}
-        </div>
-      </div>
+      {FeatureList.map((props, idx) => (
+        <Feature key={idx} {...props} />
+      ))}
     </section>
   );
 }

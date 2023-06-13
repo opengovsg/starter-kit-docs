@@ -14,3 +14,12 @@
   letter-spacing: -0.006em;
   font-feature-settings: "tnum" on, "lnum" on, "cv05" on, "cv10" on;
 }
+
+@mixin subhead-1 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: -0.006em;
+  font-feature-settings: "cv05" on, "cv10" on;
+}
