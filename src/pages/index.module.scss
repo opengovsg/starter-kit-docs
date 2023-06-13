@@ -1,0 +1,42 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+@import "../css/foundation/color";
+@import "../css/foundation/typography";
+
+.hero {
+  --ifm-hero-background-color: #{$color-base-canvas-brand-subtle};
+  --ifm-hero-text-color: #{$color-base-content-strong};
+  text-align: center;
+
+  em {
+    color: $color-base-content-brand;
+    font-style: normal;
+  }
+
+  .hero__title {
+    @include display-1;
+  }
+
+  .hero__subtitle {
+    @include body-1;
+    color: $color-base-content-default;
+  }
+}
+
+[data-theme="dark"] {
+  .hero {
+    --ifm-hero-background-color: #{$color-base-canvas-inverse};
+    --ifm-hero-text-color: #{$color-base-content-inverse};
+  }
+
+  em {
+    color: $color-base-content-inverse;
+  }
+
+  .hero__subtitle {
+    color: $color-base-content-inverse;
+  }
+}

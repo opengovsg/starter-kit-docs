@@ -1,0 +1,59 @@
+@import "../../../css/foundation/color";
+@import "../../../css/foundation/typography";
+
+.features {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+[data-theme="dark"] {
+  .feature {
+    &:nth-child(even) {
+      background: #{$color-base-canvas-inverse};
+    }
+
+    &:nth-child(odd) {
+      background: #{$color-grey-900};
+    }
+  }
+}
+
+.feature {
+  width: 100%;
+  min-height: 25rem;
+
+  &:nth-child(even) {
+    background: #{$color-base-canvas-brand-subtle};
+    .orientation {
+      flex-direction: row-reverse;
+    }
+  }
+
+  .description {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+  }
+
+  .link {
+    @include subhead-1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    svg {
+      font-size: 1.5rem;
+    }
+  }
+
+  .featureSvg {
+    max-width: 30rem;
+
+    @media (max-width: 768px) {
+      max-width: 20rem;
+    }
+  }
+}

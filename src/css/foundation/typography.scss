@@ -1,0 +1,46 @@
+@mixin display-1 {
+  font-weight: 700;
+  font-size: 4rem;
+  line-height: 4.5rem;
+  letter-spacing: -0.022em;
+  font-feature-settings: "tnum" on, "lnum" on, "cv05" on;
+
+  @media (max-width: 996px) {
+    font-weight: 600;
+    font-size: 2.5rem;
+    line-height: 3rem;
+    font-feature-settings: "cv05" on, "cv10" on;
+  }
+}
+
+@mixin heading {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 2.5rem;
+  line-height: 3rem;
+  letter-spacing: -0.022em;
+  font-feature-settings: "cv05" on, "cv10" on;
+
+  @media (max-width: 996px) {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+}
+
+@mixin body-1 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: -0.006em;
+  font-feature-settings: "tnum" on, "lnum" on, "cv05" on, "cv10" on;
+}
+
+@mixin subhead-1 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: -0.006em;
+  font-feature-settings: "cv05" on, "cv10" on;
+}
