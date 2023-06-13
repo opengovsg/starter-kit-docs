@@ -7,7 +7,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Starter Kit",
-  tagline: "Start building for public good in minutes",
+  tagline: "Start building for public good easily, and in minutes",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
@@ -32,7 +32,7 @@ const config = {
     defaultLocale: "en",
     locales: ["en"],
   },
-
+  plugins: ["docusaurus-plugin-sass"],
   presets: [
     [
       "classic",
@@ -42,7 +42,7 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
         },
         theme: {
-          customCss: require.resolve("./src/css/custom.css"),
+          customCss: require.resolve("./src/css/custom.scss"),
         },
       }),
     ],
