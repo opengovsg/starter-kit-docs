@@ -24,6 +24,9 @@
   --ifm-button-font-weight: 500;
   --ifm-button-padding-horizontal: 1rem;
   --ifm-button-padding-vertical: 0.625rem;
+
+  // Footer
+  --ifm-footer-background-color: #{$color-base-canvas-brand-subtle};
 }
 
 @supports (font-variation-settings: normal) {
@@ -43,6 +46,9 @@ html[data-theme="dark"] {
   --ifm-color-primary-lightest: #{$color-brand-primary-200};
 
   --ifm-background-surface-color: #{$color-grey-900};
+
+  // Footer
+  --ifm-footer-background-color: #{$color-grey-900};
 }
 
 @import "./components/button.scss";

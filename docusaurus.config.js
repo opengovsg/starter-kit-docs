@@ -74,18 +74,30 @@ const config = {
         ],
       },
       footer: {
-        style: "dark",
+        logo: {
+          alt: "Open Government Products Logo",
+          src: "img/logo.svg",
+          href: "https://open.gov.sg",
+        },
         links: [
           {
-            title: "Docs",
-            items: [
-              {
-                label: "Tutorial",
-                to: "/docs/getting-started",
-              },
-            ],
+            label: "Getting Started",
+            to: "/docs/getting-started",
+          },
+          {
+            label: "Optional Features",
+            to: "/docs/optional-features",
+          },
+          {
+            label: "Guides",
+            to: "/docs/guides",
+          },
+          {
+            label: "Concepts",
+            to: "/docs/concepts",
           },
         ],
+
         copyright: `Copyright © ${new Date().getFullYear()} Open Government Products. Built with Docusaurus.`,
       },
       prism: {
