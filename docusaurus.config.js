@@ -123,6 +123,11 @@ const config = {
               appId: env.ALGOLIA_APP_ID,
               apiKey: env.ALGOLIA_SEARCH_API_KEY,
               indexName: env.ALGOLIA_INDEX_NAME,
+              // Optional: Replace parts of the item URLs from Algolia. Useful when using the same search index for multiple deployments using a different baseUrl. You can use regexp or string in the `from` param. For example: localhost:3000 vs myCompany.com/docs
+              replaceSearchResultPathname: {
+                from: "/starter-kit-docs/", // or as RegExp: /\/docs\//
+                to: "/",
+              },
             },
           }
         : {}),
