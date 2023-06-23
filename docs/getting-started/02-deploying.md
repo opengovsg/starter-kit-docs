@@ -2,10 +2,20 @@
 
 Starter Kit uses [Vercel](https://vercel.com) as our deployment platform. Vercel provides hosting for web applications, and offers a range of tools to aid with maintaining your product, including integrations with GitHub.
 
-Setting up Vercel for your product can be done via the deploy button:
+Setting up Vercel for your product can be done via the deploy button below.
 
+:::info
+If you are not a public officer with access to Postman.gov.sg, use the "Without Postman API key" button.
+:::
+
+With Postman API key:
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fopengovsg%2Fstarter-kit%2Ftree%2Fmain&env=DATABASE_URL,SESSION_SECRET,POSTMAN_API_KEY">
+<img src="https://vercel.com/button" width={125} />
+</a>
+
+Without Postman API key:
 <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fopengovsg%2Fstarter-kit%2Ftree%2Fmain&env=DATABASE_URL,SESSION_SECRET">
-  <img src="https://vercel.com/button" width={125} />
+<img src="https://vercel.com/button" width={125} />
 </a>
 
 ## Step 1: Creating your repository
