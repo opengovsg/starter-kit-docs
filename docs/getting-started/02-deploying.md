@@ -8,11 +8,13 @@ Setting up Vercel for your product can be done via the deploy button below.
 If you are not a public officer with access to Postman.gov.sg, use the "Without Postman API key" button.
 :::
 
-With Postman API key: <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fopengovsg%2Fstarter-kit%2Ftree%2Fmain&env=DATABASE_URL,SESSION_SECRET,POSTMAN_API_KEY">
+With Postman API key:
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fopengovsg%2Fstarter-kit%2Ftree%2Fmain&env=DATABASE_URL,SESSION_SECRET,POSTMAN_API_KEY">
 <img src="https://vercel.com/button" width={125} />
 </a>
 
-Without Postman API key: <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fopengovsg%2Fstarter-kit%2Ftree%2Fmain&env=DATABASE_URL,SESSION_SECRET">
+Without Postman API key:
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fopengovsg%2Fstarter-kit%2Ftree%2Fmain&env=DATABASE_URL,SESSION_SECRET">
 <img src="https://vercel.com/button" width={125} />
 </a>
 
