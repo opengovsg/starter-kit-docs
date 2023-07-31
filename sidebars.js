@@ -52,7 +52,7 @@ const sidebars = {
         {
           type: "doc",
           label: "Suspense and ErrorBoundary usage",
-          id: "guides/suspense-usage"
+          id: "guides/suspense-usage",
         },
         {
           type: "doc",
@@ -63,6 +63,11 @@ const sidebars = {
           type: "doc",
           label: "Setting up your staging environment",
           id: "guides/staging",
+        },
+        {
+          type: "doc",
+          label: "Migrate from Vercel to AWS",
+          id: "guides/migrate-vercel-to-aws",
         },
       ],
     },
