@@ -19,7 +19,8 @@ To set up Cloudflare R2, follow the steps below:
 5. Set custom domain for the bucket (optional for development)
    ![](./images/storage/custom-domain.png)
 6. Set CORS to allow for your domain
-   ![](./images/storage/cors.png)
+   ![cors](https://github.com/opengovsg/starter-kit-docs/assets/44336310/7adab05a-ac0b-41db-8a4c-0718667fd548)
+
 
 Set the following environment variables:
 
