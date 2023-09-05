@@ -18,7 +18,7 @@ To set up Cloudflare R2, follow the steps below:
    ![](./images/storage/allow-public-access.png)
 5. Set custom domain for the bucket (optional for development)
    ![](./images/storage/custom-domain.png)
-6. Set CORS to allow for your domain
+6. Set CORS to allow for your domain, and update `AllowedHeaders` to include `content-type`
    ![](./images/storage/cors.png)
 
 Set the following environment variables:
