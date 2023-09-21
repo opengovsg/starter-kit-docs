@@ -77,6 +77,7 @@ export default meta;
 #### Story properties
 
 In addition, there are some important properties you can add to the default and named exports to control how Storybook renders and lists your stories:
+
 | Property | Description |
 | --- | --- |
 | `title` | This is a string that controls how Storybook lists your stories in the sidebar. For example, you can use it to group stories into sections. |
