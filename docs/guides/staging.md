@@ -26,9 +26,8 @@ In your repository, create a `staging` branch from your `main` branch:
 ## Set Environment Variables for Staging
 
 At the page for your Vercel project, click the Settings tab, then
-the Environment Variables section. Add new entries for `DATABASE_URL`,
-`POSTMAN_API_KEY` and `SESSION_SECRET`, then ensure that only the Preview
-environment is checked, and only for the `staging` branch.
+the Environment Variables section. Add new entries for `POSTMAN_API_KEY` and `SESSION_SECRET`, 
+then ensure that only the Preview environment is checked, and only for the `staging` branch.
 
 <img src={VercelEnv} />
 

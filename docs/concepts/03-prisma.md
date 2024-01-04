@@ -12,7 +12,7 @@ You will find the Prisma schema file at `/prisma/schema.prisma`. This file is wh
 
 ## Default Database
 
-The default database in this application uses [CockroachDB](./06-cockroachdb.md). You can change the database to use by changing the `provider` in the `datasource` to the database of your choice, and then updating the connection string within environment variables to point to your database.
+The default database in this application uses [Neon](./06-neon.md). You can change the database to use by changing the `provider` in the `datasource` to the database of your choice, and then updating the connection string within environment variables to point to your database.
 
 ## Seeding your Database
 
@@ -21,7 +21,7 @@ The default database in this application uses [CockroachDB](./06-cockroachdb.md)
 ```json title=package.json
 {
   "scripts": {
-    "db:seed": "prisma db seed",
+    "db:seed": "prisma db seed"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -30,9 +30,9 @@ The default database in this application uses [CockroachDB](./06-cockroachdb.md)
 ```
 
 ```ts title=prisma/seed.ts
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 async function main() {
   const id = "cl9ebqhxk00003b600tymydho";
@@ -62,9 +62,9 @@ Then, just run `npm db:seed` (or `npm`/`yarn`) to seed your database.
 
 ## Useful Resources
 
-| Resource                     | Link                                                                                                                                              |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Prisma Docs                  | https://www.prisma.io/docs/                                                                                                                       |
-| Prisma GitHub                | https://github.com/prisma/prisma                                                                                                                  |
-| Prisma Migrate Playground    | https://playground.prisma.io/guides                                                                                                               |
-| CockroachDB Connection Guide | https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases/connect-your-database-typescript-cockroachdb |
+| Resource                  | Link                                                                                                                                             |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Prisma Docs               | https://www.prisma.io/docs/                                                                                                                      |
+| Prisma GitHub             | https://github.com/prisma/prisma                                                                                                                 |
+| Prisma Migrate Playground | https://playground.prisma.io/guides                                                                                                              |
+| Database Connection Guide | https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases/connect-your-database-typescript-postgresql |

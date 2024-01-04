@@ -1,6 +1,8 @@
-import DbCreateAccount from "./images/cockroach/cockroach-create-account.png"
-import DbCreateCluster from "./images/cockroach/cockroach-create-cluster.png"
-import DbCreateUser from "./images/cockroach/cockroach-create-sql-user.png"
+import DbCreateAccount from "./images/neon/neon-create-account.png"
+import DbCreateProject from "./images/neon/neon-create-project.png"
+import DbViewDefaultConnectionString from "./images/neon/neon-view-default-connection-string.png"
+import DbCreateRole from "./images/neon/neon-create-role.png"
+import DbCreateDatabase from "./images/neon/neon-create-database.png"
 
 import VercelSignup from "./images/vercel/setup/signup.png"
 import VercelYourName from "./images/vercel/setup/your-name.png"
@@ -10,31 +12,47 @@ import VercelGit from "./images/vercel/setup/git.png"
 
 Before we can deploy your application, you will need to obtain two sets of credentials:
 
-- A CockroachDB database cluster, to hold information for your product
+- A Neon database cluster, to hold information for your product
 - An API key from [Postman](https://www.postman.gov.sg), for sending emails, including emails for logging into your product
 - A Vercel account, to deploy and host your product
 
-## CockroachDB
+## Neon
 
-We recommend using [CockroachDB](https://www.cockroachlabs.com/) to host the database for your product.
+We recommend using [Neon](https://www.neon.tech/) to host the database for your product.
 
 ### Step 1: Creating an account
 
-Go to this [link](https://www.cockroachlabs.com/lp/serverless), login and create your account. Set your Company Name to your project name.
+Go to this [link](https://console.neon.tech/), login and create your account.
 
 <img src={DbCreateAccount} width={500} />
 
-### Step 2: Creating a cluster
+### Step 2: Creating a project
 
-Create a free serverless cluster with AWS as the provider and Singapore as the region.
+Create a free project with Singapore as the region. You may leave the database name as the default value as we will be creating another database later.
 
-<img src={DbCreateCluster} />
+<img src={DbCreateProject} width={500} />
 
-### Step 3: Creating a user and save connection string
+A database connection string will be displayed to you, but you do not need to save this value.
 
-Create a SQL user. Set it to anything other than `root`. Save the connection string. You will need this later.
+<img src={DbViewDefaultConnectionString} width={500} />
 
-<img src={DbCreateUser} width={500} />
+### Step 3: Creating a role for your application
+
+Click on Roles in the sidebar and create a SQL user for your application.
+
+<img src={DbCreateRole} width={500} />
+
+### Step 4: Creating a database
+
+Click on Databases in the sidebar and create a new database with your application role as the owner.
+
+<img src={DbCreateDatabase} width={500} />
+
+<br /><br />
+
+:::tip
+You may delete the default role and database as they will no longer be used.
+:::
 
 ## Postman API
 
@@ -57,7 +75,6 @@ Provide a descriptive label for your API key. This will help you to identify the
 Save the API key somewhere safe. You will need this when deploying your application in the next step.
 
 ![Postman Copy API Key](https://1981680851-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MAQH3DF49Lq0AJudrbF%2Fuploads%2FJ2ztqOOvyBfcaV0gdLfI%2FScreenshot%202023-04-05%20at%2010.54.31%20AM.png?alt=media&token=ce699a50-6ed6-4614-8d1e-cdd18cb6ba89)
-
 
 ## Vercel
 

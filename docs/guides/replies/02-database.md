@@ -1,6 +1,6 @@
 # Database schema
 
-We use Prisma as the database ORM for the application layer, and CockroachDB for the database layer.
+We use Prisma as the database ORM for the application layer, and Postgres for the database layer.
 
 #### Related documentation
 
