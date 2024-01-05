@@ -4,6 +4,11 @@
 const sidebars = {
   docSidebar: [
     {
+      type: 'doc',
+      label: 'Preface',
+      id: "preface",
+    },
+    {
       type: "category",
       label: "Getting Started",
       link: {
