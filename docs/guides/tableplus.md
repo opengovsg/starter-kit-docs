@@ -1,39 +1,45 @@
-# Connecting to CockroachDB
+import NeonSelectProject from "./images/tableplus/neon-select-project.png"
+import NeonDashboard from "./images/tableplus/neon-dashboard.png"
+import NeonConnectionParameters from "./images/tableplus/neon-connection-parameters.png"
+
+# Connecting to your database
 
 ## TablePlus
-[TablePlus](https://tableplus.com/) can be used to connect to your CockroachDB instance to run queries.
+
+[TablePlus](https://tableplus.com/) can be used to connect to your Postgres instance to run queries.
 
 ### Development cluster
-For connecting to your development instance of CockroachDB, you can use the following configuration:
 
-| Field | Value | 
-|:----- | :---- |
+For connecting to your development instance of Postgres, you can use the following configuration:
+
+| Field       | Value       |
+| :---------- | :---------- |
 | Host/Socket | `localhost` |
-| Port | `26257` |
-| User | `root` |
-| Password | `root` |
-| Database | `app` |
+| Port        | `5432`      |
+| User        | `root`      |
+| Password    | `root`      |
+| Database    | `app`       |
 
-### CockroachDB Cloud cluster
-For connecting to your staging or production cluster running on CockroachDB Cloud, you will have to first login to your CockroachDB Cloud console and select the cluster you would like to access.
+### Neon cluster
 
-![CockroachCloud Console](./images/tableplus/cockroachcloud-console.png)
+For connecting to your staging or production cluster running on Neon, you will have to first login to your Neon console and select the project.
 
-Next, click on the "Connect" button.
+<img src={NeonSelectProject} width={500} />
 
+Next, select the branch you want to connect to.
 
-![CockroachCloud connect button](./images/tableplus/cockroachcloud-connect.png)
+<img src={NeonDashboard} width={500} />
 
-Select "Parameters only" under "Select option/language".
+Select "Parameters only" using the dropdown at the top left hand corner of the "Connection Details" panel.
 
-![CockroachCloud parameters](./images/tableplus/cockroachcloud-parameters.png)
+<img src={NeonConnectionParameters} width={350} />
 
 Next provide the following values to your TablePlus connection configuration:
 
-| Field | Value |
-|:----- | :---- |
-| Host/Socket | Use the value provided under `Host` on the console |
-| Port | Use the value provided under `Port` on the console |
-| User | Use the value provided under `Username` on the console |
-| Password | This value should have been set when you first created the database |
-| Database | The format of the database name is as follow `<cluster_name>.<database_name>`. <br /><br /> The cluster name can be found in your `Host` value. For example, if your host is `prod-tooling-starter-1234.1ab.cockroachlabs.cloud`, your cluster name is `prod-tooling-starter-1234`. Your database name should be `prod-tooling-starter-1234.defaultdb`, assuming that your database name is `defaultdb`. |
+| Field       | Value                                                    |
+| :---------- | :------------------------------------------------------- |
+| Host/Socket | Use the value provided under `PGHOST` on the console     |
+| Port        | 5432                                                     |
+| User        | Use the value provided under `PGUSER` on the console     |
+| Password    | Use the value provided under `PGPASSWORD` on the console |
+| Database    | Use the value provided under `PGDATABASE` on the console |
