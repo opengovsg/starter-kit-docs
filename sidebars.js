@@ -74,6 +74,11 @@ const sidebars = {
           label: "Migrate from Vercel to AWS",
           id: "guides/migrate-vercel-to-aws",
         },
+        {
+          type: "doc",
+          label: "Deploying to a Physical Server or Virtual Private Server",
+          id: "guides/on-prem",
+        },
       ],
     },
     {
