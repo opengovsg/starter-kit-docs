@@ -20,7 +20,7 @@ Starter Kit uses [Vercel](https://vercel.com) as our deployment platform. Vercel
 Setting up Vercel for your product can be done via the deploy button below.
 
 :::info
-If you are not a public officer with access to Postman.gov.sg, use the "Without Postman API key" button.
+If you are not a public officer with access to [Postman.gov.sg (Legacy)](https://legacy.postman.gov.sg), use the "Without Postman API key" button.
 :::
 
 With Postman API key:

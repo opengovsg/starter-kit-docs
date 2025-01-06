@@ -13,7 +13,7 @@ import VercelGit from "./images/vercel/setup/git.png"
 Before we can deploy your application, you will need to obtain two sets of credentials:
 
 - A Neon database cluster, to hold information for your product
-- An API key from [Postman](https://www.postman.gov.sg), for sending emails, including emails for logging into your product
+- An API key from [Postman (Legacy)](https://legacy.postman.gov.sg), for sending emails, including emails for logging into your product
 - A Vercel account, to deploy and host your product
 
 ## Neon
@@ -56,11 +56,11 @@ You may delete the default role and database as they will no longer be used.
 
 ## Postman API
 
-[Postman](https://www.postman.gov.sg) is the Singapore Government's messaging service. It offers an API to send emails from your product, accessible through a key unique to you.
+[Postman (Legacy)](https://legacy.postman.gov.sg) is the Singapore Government's messaging service. It offers an API to send emails from your product, accessible through a key unique to you.
 
 ### Step 1: Navigate to settings page
 
-Login into [Postman](https://postman.gov.sg) with your .gov.sg email and navigate to the Settings page. Click on "Generate API Key".
+Login into [Postman](https://legacy.postman.gov.sg) with your .gov.sg email and navigate to the Settings page. Click on "Generate API Key".
 
 ![Postman Settings](https://1981680851-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MAQH3DF49Lq0AJudrbF%2Fuploads%2FjJsBFXqPldqbpTv6JqPJ%2FScreenshot%202023-02-24%20at%203.13.56%20PM.png?alt=media&token=7dcd58ed-52ae-4aff-93ae-9ab8702ab8d0)
 

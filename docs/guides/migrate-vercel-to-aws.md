@@ -19,7 +19,7 @@ Vercel should satisfy our needs in most cases. Please only read when you are act
 
    - RDS: [CockroachDB](https://www.cockroachlabs.com/) or [Neon](https://neon.tech/)
    - Redis/Kafka/Message queue: [Upstash](https://upstash.com/)
-   - SES: [Postman](https://postman.gov.sg/)
+   - SES: [Postman (Legacy)](https://legacy.postman.gov.sg/)
 
    Potential valid reasons:
 
