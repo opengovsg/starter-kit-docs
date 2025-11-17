@@ -3,7 +3,7 @@
 :::note
 This feature is already in the application, but here as documentation on how one could approach the problem.
 If you want to follow along, you can check out the [`tutorial branch`](https://github.com/opengovsg/starter-kit-v2/tree/tutorial) that does not have this feature yet to follow along. Needed changes are marked with `TODO(example)`, or you may see the commit history for the changes needed.
-:::note
+:::
 
 There are usually 3 main parts to adding a feature:
 

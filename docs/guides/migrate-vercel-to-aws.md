@@ -4,7 +4,7 @@
 This is **NOT** a necessary step. Please skip this page if you are just reading all the Starter Kit documents.
 
 Vercel should satisfy our needs in most cases. Please only read when you are actually blocked by Vercel and are thinking about moving out.
-:::note
+:::
 
 ## Common reasons to migrate away from Vercel
 
@@ -73,8 +73,8 @@ npx -p @opengovsg/create-ogp-infra create-ogp-infra
 
 ### Example repositories generated from the CLI
 
-- Generated infra: <https://github.com/opengovsg/starter-kit-example-infra>
-- App repo with generated deployment Github Action: <https://github.com/opengovsg/starter-kit-example>
+- Generated infra: https://github.com/opengovsg/starter-kit-example-infra
+- App repo with generated deployment Github Action: https://github.com/opengovsg/starter-kit-example
 
 > These are private repositories. Please log in to GitHub to access them.
 
@@ -82,7 +82,7 @@ npx -p @opengovsg/create-ogp-infra create-ogp-infra
 
 **If you have used Pulumi and ECS before**: reference the following repositories/PRs:
 
-- <https://github.com/opengovsg/bright-infra>
-- <https://github.com/opengovsg/bright/pull/120>
+- https://github.com/opengovsg/bright-infra
+- https://github.com/opengovsg/bright/pull/120
 
 **If there is any doubts with Pulumi or ECS**: give us a ping on [#tooling-team](https://opengovproducts.slack.com/archives/C04S1UY5YJU), especially [@Blake](https://opengovproducts.slack.com/team/U03K4FYCDAA). We are more than happy to pair with you and help sort out any issues regarding Vercel/AWS!
