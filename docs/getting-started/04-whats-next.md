@@ -10,5 +10,5 @@ Congratulations! You have completed the setup of your new application. You have:
 
 As you continue your journey, you can consider:
 
-- [Learn how to implement a new feature](../guides/replies/01-overview.md)
+- TODO: Learn how to implement a new feature
 - [Learn about the different libraries we use in Starter Kit](../concepts/01-folder-structure.md)
