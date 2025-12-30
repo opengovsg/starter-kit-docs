@@ -2,73 +2,93 @@
 
 This application has the following test types set up:
 
-- integration (via Vitest)
-- end-to-end tests (via Playwright)
-- client interaction testing (via Storybook and Chromatic)
-- client visual regression testing (via Storybook and Chromatic)
+- Integration tests (via Vitest + Testcontainers)
+- End-to-end tests (via Playwright + Testcontainers)
+- Client interaction testing (via Storybook and Chromatic)
+- Client visual regression testing (via Storybook and Chromatic)
 
-This section will cover the "backend" tests (integration and e2e), as well as how to write new tests for tRPC procedures.
+This section will cover the integration tests, E2E tests, as well as how to write new tests for tRPC procedures.
 For more information on the client tests, refer to the [Storybook](./11-storybook.md) and [Chromatic](../optional-features/01-chromatic.md) sections.
 
 ## Integration tests
 
-The integration tests use [Vitest](https://vitest.dev/). The groundwork has been laid out to ensure that the tests are set up to run with the correct environment variables and database connection, and has also been verified to work with testing tRPC procedures.
+The integration tests use [Vitest](https://vitest.dev/) with [Testcontainers](https://testcontainers.com/) for database isolation. Tests run against real PostgreSQL databases spun up in Docker containers, ensuring each test file gets a clean, isolated database instance.
 
 :::info
 "Why Vitest? Why not Jest?" you may ask. Basically because it is faster. Read Vitest's [comparison page](https://vitest.dev/guide/comparisons.html).
 :::
 
-### Related Vitest files
+### Related test files
 
 Everything has already been set up in the application. The main files to look at are:
 
-| File               | Description                                    |
-| ------------------ | ---------------------------------------------- |
-| `vitest.config.ts` | This is the Vitest configuration file.         |
-| `.env.test`        | Environment variables specifically for testing |
+| File                             | Description                                                          |
+| -------------------------------- | -------------------------------------------------------------------- |
+| `vitest.config.ts` (root)        | Root Vitest config that defines workspace projects                   |
+| `apps/web/vitest.config.ts`      | Web app Vitest config with test environment setup                    |
+| `apps/web/tests/global-setup.ts` | Global setup that starts Testcontainers (database, optionally Redis) |
+| `apps/web/tests/db/setup.ts`     | Per-test database setup with Prisma migrations                       |
+| `apps/web/tests/trpc.ts`         | tRPC testing utilities (context creation, caller factory)            |
+| `apps/web/tests/common.ts`       | Container configuration and utilities                                |
 
 ### Running Vitest (locally)
 
-As this is an integration test suite that relies on a working database connection (rather than mocking the database), you will need to spin up the database before running the tests. This can be done with:
+The tests use Testcontainers to automatically spin up PostgreSQL containers, so you only need Docker running. No manual database setup required.
+
+Run the tests with:
 
 ```sh
-npm run setup
+pnpm test
 ```
 
-to spin up the database in a Docker container.
+Test environment variables are defined directly in `apps/web/vitest.config.ts` under the `test.env` section.
 
-Then, run the tests with: `npm run test-dev:unit` for watch mode or `npm run test:unit` for a single run.
-
-The test scripts have been set up to use the `.env.test` file, which has been configured to use the test database connection (specifically the `test` database exposed `localhost:26257`).
-
-### Setup and teardown of Prisma per test
+### Test isolation with Testcontainers
 
 <details>
-<summary>Advanced: How tests run Prisma queries in parallel</summary>
+<summary>Advanced: How tests run with isolated databases</summary>
 
-The application uses a Vitest helper package [`vitest-environment-vprisma`](https://github.com/aiji42/vitest-environment-vprisma), which improves the experience of testing with `vitest` and `@prisma/client`. It allows you to isolate each test case with a transaction and rollback after completion, giving you a safe and clean testing environment.
+The application uses [Testcontainers](https://testcontainers.com/) to provide isolated database instances for testing. Here's how it works:
 
-A Prisma mock has been set up in the application that converts all Prisma Client usage in tests to use the mock. This is done in `vitest.setup.ts`:
+1. **Global Setup** (`tests/global-setup.ts`): Starts PostgreSQL (and optionally Redis) containers before any tests run
+2. **Per-test Database** (`tests/db/setup.ts`): Creates a unique database for each test file and applies migrations
+3. **Table Reset**: Use `resetTables()` from `tests/db/utils.ts` in `beforeEach` hooks to clean data between tests
 
-```ts title="vitest.setup.ts"
+The database setup in `tests/db/setup.ts` mocks the `@acme/db` module to use the test database:
+
+```ts title="tests/db/setup.ts"
 import { vi } from "vitest";
 
-vi.mock("./src/server/prisma", () => ({
-  prisma: vPrisma.client,
+import { PrismaClient } from "@acme/db/client";
+
+const db = new PrismaClient({
+  adapter: new PrismaPg({ connectionString }),
+}).$extends(kyselyPrismaExtension);
+
+vi.mock("@acme/db", () => ({
+  db,
 }));
 ```
 
-You can then use the `prisma` object in your tests as you would normally.
+You can then use the `db` object in your tests as you would normally:
 
-```ts title="src/server/modules/auth/email/__tests__/email.router.test.ts"
-import { prisma } from "~/server/prisma";
-// ...
-await prisma.verificationToken.create({
-  data: {
-    expires: new Date(Date.now() + env.OTP_EXPIRY * 1000),
-    identifier: TEST_EMAIL,
-    token: VALID_TOKEN_HASH,
-  },
+```ts title="src/server/modules/auth/__tests__/auth.service.spec.ts"
+import { resetTables } from "~tests/db/utils";
+
+import { db } from "@acme/db";
+
+describe("auth.service", () => {
+  beforeEach(async () => {
+    await resetTables(["VerificationToken", "User", "Account"]);
+  });
+
+  it("should create a verification token", async () => {
+    // Test code using db...
+    const token = await db.verificationToken.findUnique({
+      where: { identifier: vfnIdentifier },
+    });
+    expect(token).toBeDefined();
+  });
 });
 ```
 
@@ -76,128 +96,255 @@ await prisma.verificationToken.create({
 
 ### Writing new integration tests for tRPC procedures
 
-You can easily set the tRPC context using the `createContextInner` function exposed in `src/server/context.ts`.
-The application also includes helper functions that you can use to set up the context for your tests in `tests/integration/helpers/iron-session.ts`,
+You can easily create a tRPC caller for testing using the helper functions in `tests/trpc.ts`:
 
-| Function name        | Description                                                                                   |
-| -------------------- | --------------------------------------------------------------------------------------------- |
-| `applySession`       | Create a mock `IronSession` object that you can use to set up an **unauthenticated** session. |
-| `applyAuthedSession` | Create a mock `IronSession` object that you can use to set up an **authenticated** session.   |
+| Function name       | Description                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------------- |
+| `createTestContext` | Creates a mock context with optional session data for authenticated/unauthenticated testing |
+| `createTestCaller`  | Creates a tRPC caller using the app router                                                  |
 
 Which can be used as follows:
 
-```ts
-import { createContextInner } from "~/server/context";
-import {
-  applyAuthedSession,
-  applySession,
-} from "tests/integration/helpers/iron-session";
+```ts title="src/server/api/routers/__tests__/me.router.spec.ts"
+import { TRPCError } from "@trpc/server";
+import { resetTables } from "~tests/db/utils";
+import { createTestCaller, createTestContext } from "~tests/trpc";
 
-// Unauthorized session example
-describe("auth.email router", () => {
-  describe("login procedure", () => {
-    it("should throw if email is not provided", async () => {
-      // Arrange
-      const session = applySession();
-      const ctx = await createContextInner({ session });
-      const caller = emailSessionRouter.createCaller(ctx);
+import { db } from "@acme/db";
 
-      // Act
-      // Call procedure with empty email
-      const result = caller.login({ email: "" });
-
-      // Assert
-      await expect(result).rejects.toThrowError();
-    });
+describe("meRouter", () => {
+  beforeEach(async () => {
+    await resetTables(["User", "Account"]);
   });
-});
 
-// Authorized session example
-describe("post router", () => {
-  describe("add procedure", () => {
-    it("post should be retrievable after creation", async () => {
-      const defaultUser: User = {
-        /* ... */
-      };
-      const session = await applyAuthedSession(defaultUser);
-      const ctx = await createContextInner({
-        session,
+  describe("get", () => {
+    // Unauthenticated session example
+    it("should throw UNAUTHORIZED error when user is not authenticated", async () => {
+      const ctx = createTestContext(undefined);
+      const caller = createTestCaller(ctx);
+
+      try {
+        await caller.me.get();
+      } catch (error) {
+        expect(error).toBeInstanceOf(TRPCError);
+        expect((error as TRPCError).code).toEqual("UNAUTHORIZED");
+      }
+    });
+
+    // Authenticated session example
+    it("should return user data when authenticated", async () => {
+      // Create a test user
+      const testUser = await db.user.create({
+        data: {
+          email: "test@example.com",
+          name: "Test User",
+        },
       });
-      const caller = postRouter.createCaller(ctx);
 
-      const input: RouterInput["post"]["add"] = {
-        title: "hello test",
-        content: "hello test with a long input",
-        contentHtml: "<p>hello test with a long input</p>",
-      };
+      const ctx = createTestContext({ session: { userId: testUser.id } });
+      const caller = createTestCaller(ctx);
+      const result = await caller.me.get();
 
-      const post = await postRouter.add(input);
-      const byId = await postRouter.byId({ id: post.id });
-
-      expect(byId).toMatchObject(input);
+      expect(result).toEqual({
+        id: testUser.id,
+        email: "test@example.com",
+        name: "Test User",
+        image: null,
+      });
     });
   });
 });
+```
+
+### Test file conventions
+
+Tests should be placed in `__tests__` folders alongside the code they test, with a `.spec.ts` extension:
+
+```
+src/
+  server/
+    modules/
+      auth/
+        __tests__/
+          auth.service.spec.ts
+          auth.utils.spec.ts
+    api/
+      routers/
+        __tests__/
+          me.router.spec.ts
+  validators/
+    __tests__/
+      auth.spec.ts
+```
+
+## MSW for Storybook
+
+The application includes [MSW (Mock Service Worker)](https://mswjs.io/) setup for mocking tRPC requests in Storybook.
+
+### Related MSW files
+
+| File                      | Description                                   |
+| ------------------------- | --------------------------------------------- |
+| `tests/msw/trpc-msw.ts`   | tRPC MSW adapter configuration                |
+| `tests/msw/handlers/*.ts` | MSW request handlers for different procedures |
+
+### Example MSW handler
+
+```ts title="tests/msw/handlers/auth.ts"
+import { delay } from "msw";
+
+import { trpcMsw } from "../trpc-msw";
+
+export const authHandlers = {
+  signIn: {
+    success: () =>
+      trpcMsw.auth.email.login.mutation(() => {
+        return {
+          email: "test@example.com",
+          otpPrefix: "TST",
+        };
+      }),
+    loading: () =>
+      trpcMsw.auth.email.login.mutation(async () => {
+        await delay("infinite");
+        return {
+          email: "never",
+          otpPrefix: "TST",
+        };
+      }),
+  },
+};
 ```
 
 ## End-to-end (E2E) tests
 
-E2E tests uses Playwright. Tests are located in the `playwright` folder.
+E2E tests use [Playwright](https://playwright.dev/) with Testcontainers for database isolation. Tests are located in `apps/web/tests/e2e/`.
+
+### Related E2E files
+
+| File                                      | Description                                                  |
+| ----------------------------------------- | ------------------------------------------------------------ |
+| `apps/web/playwright.config.ts`           | Playwright configuration file                                |
+| `apps/web/tests/e2e/*.test.ts`            | E2E test files                                               |
+| `apps/web/tests/e2e/app-fixture.ts`       | Custom Playwright fixture with database setup/teardown       |
+| `apps/web/tests/e2e/setup/db-setup.ts`    | Database container setup, migrations, and snapshot utilities |
+| `apps/web/tests/e2e/setup/redis-setup.ts` | Redis container setup and flush utilities                    |
+| `apps/web/.env.e2e`                       | Environment variables specifically for E2E testing           |
 
 ### Running Playwright (locally)
 
-As this is an e2e test suite, both the application and database needs to be active. This can be done with:
+The E2E tests use Testcontainers to automatically spin up a PostgreSQL container, so you only need Docker running. The test server runs on port 3111 to avoid conflicts with development.
+
+Run the tests with:
 
 ```sh
-npm run setup
-npm run dev
+cd apps/web
+pnpm e2e        # Run all E2E tests (headless in CI, browser locally)
+pnpm e2e:ui     # Run with Playwright UI for debugging
 ```
 
-to spin up the database in a Docker container, as well as run the Next.js application.
+The Playwright config automatically starts the Next.js dev server via `pnpm dev-e2e` before running tests.
 
-Then, run the e2e tests with: `nm run test:e2e`, which will spin up the Playwright test runner.
+### App fixture
 
-The test script has been set up to use the `.env.test` file, which has been configured to use the test database connection (specifically the `test` database exposed `localhost:26257`).
+The E2E tests use a custom Playwright fixture (`app-fixture.ts`) that provides:
+
+1. **Database container**: Starts a PostgreSQL container with a fixed port (64321)
+2. **Migrations**: Applies all Prisma migrations before tests run
+3. **Snapshots**: Takes a database snapshot after setup, resets to it after each test
+4. **Redis container**: Starts a Redis container with a fixed port (63799)
+5. **Redis flush**: Flushes all Redis data after each test
+
+```ts title="tests/e2e/app-fixture.ts"
+import { test as baseTest } from "@playwright/test";
+
+import {
+  applyMigrations,
+  resetDbToSnapshot,
+  startDatabase,
+  takeDbSnapshot,
+} from "./setup/db-setup";
+import { flushRedis as flushRedisFn, startRedis } from "./setup/redis-setup";
+
+interface DatabaseFixture {
+  databaseContainer: Awaited<ReturnType<typeof startDatabase>>;
+  resetDatabase: () => Promise<void>;
+}
+
+interface RedisFixture {
+  redisContainer: Awaited<ReturnType<typeof startRedis>>;
+  flushRedis: () => Promise<void>;
+}
+
+const test = baseTest.extend<DatabaseFixture & RedisFixture>({
+  databaseContainer: async ({}, use) => {
+    const container = await startDatabase();
+    await use(container);
+  },
+
+  resetDatabase: async ({ databaseContainer }, use) => {
+    await use(async () => {
+      await resetDbToSnapshot(databaseContainer);
+    });
+  },
+
+  redisContainer: async ({}, use) => {
+    const container = await startRedis();
+    await use(container);
+  },
+
+  flushRedis: async ({ redisContainer }, use) => {
+    await use(async () => {
+      await flushRedisFn(redisContainer);
+    });
+  },
+});
+
+test.beforeAll(async ({ databaseContainer }) => {
+  await applyMigrations(databaseContainer);
+  await takeDbSnapshot(databaseContainer);
+});
+
+test.afterAll(async ({ databaseContainer, redisContainer }) => {
+  await Promise.all([
+    databaseContainer.container.stop(),
+    redisContainer.container.stop(),
+  ]);
+});
+
+test.afterEach(async ({ resetDatabase, flushRedis }) => {
+  await Promise.all([resetDatabase(), flushRedis()]);
+});
+
+export { test };
+```
 
 ### Writing new E2E tests
 
-Playwright provides a `test` function to declare tests and `expect` function to write assertions, similar to Vitest (and other test runners).
+Import `test` from `app-fixture.ts` instead of `@playwright/test` so the setup for the database and Redis containers are included.
 
-In e2e tests, you can use the `page` object to interact with the browser. For example, to go to the home page and check that the app name is displayed:
+```ts title="tests/e2e/smoke.test.ts" {4}
+import { expect } from "@playwright/test";
 
-```ts
-import { test, expect } from "@playwright/test";
-import { env } from "~/env.mjs";
+import { env } from "~/env";
+import { test } from "./app-fixture";
 
 test("go to /", async ({ page }) => {
   await page.goto("/");
-
   await page.waitForSelector(`text=${env.NEXT_PUBLIC_APP_NAME}`);
 });
-```
 
-The runner also exposes the request and response objects after an action, which you can use to make assertions on the HTTP requests made by the application. For example, to check that the 404 page returns a 404 status code:
-
-```ts
 test("test 404", async ({ page }) => {
   const res = await page.goto("/not-found");
   expect(res?.status()).toBe(404);
 });
 ```
 
-### Related Playwright files
+## Further reading
 
-Everything has already been set up in the application. The main files to look at are:
-
-| File                    | Description                                    |
-| ----------------------- | ---------------------------------------------- |
-| `playwright.config.ts`  | This is the Playwright configuration file.     |
-| `.env.test`             | Environment variables specifically for testing |
-| `playwright/**.test.ts` | The E2E tests                                  |
-
-## Useful Resources
-
-| Resource                 | Link                                      |
+| Description              | Link                                      |
 | ------------------------ | ----------------------------------------- |
-| Vitest config            | https://vitest.dev/config/                |
-| Writing Playwright Tests | https://playwright.dev/docs/writing-tests |
+| Vitest Documentation     | https://vitest.dev/                       |
+| Playwright Documentation | https://playwright.dev/docs/writing-tests |
+| Testcontainers           | https://testcontainers.com/               |
+| MSW Documentation        | https://mswjs.io/                         |

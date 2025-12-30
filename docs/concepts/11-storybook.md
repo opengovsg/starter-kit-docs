@@ -29,7 +29,7 @@ For more in-depth information on how to write stories, refer to the [Storybook d
 In addition, here are some current examples in the application that you can refer to:
 | File | Description |
 | --- | --- |
-| [src/stories/Page/SignInPage.stories.ts](https://github.com/opengovsg/starter-kit/blob/develop/src/stories/Page/SignInPage.stories.ts) | Example of a page story |
+| [~/stories/pages/sign-in.stories.tsx](https://github.com/opengovsg/starter-kit/blob/main/apps/web/src/stories/pages/sign-in.stories.tsx) | Example of a page story |
 | TODO | Example of a component story |
 
 From the above examples, there are a few important parts to a good story:
@@ -54,7 +54,7 @@ The key ingredients are the default export that describes the component, and nam
 
 The `default` export metadata controls how Storybook lists your stories and provides information used by addons. For example, here’s the default export for the story file SignInPage.stories.ts:
 
-```tsx title="SignInPage.stories.ts|tsx"
+```tsx title="sign-in.stories.tsx"
 import type { Meta } from "@storybook/react";
 import SignInPage from "~/pages/sign-in";
 
@@ -78,13 +78,13 @@ export default meta;
 
 In addition, there are some important properties you can add to the default and named exports to control how Storybook renders and lists your stories:
 
-| Property | Description |
-| --- | --- |
-| `title` | This is a string that controls how Storybook lists your stories in the sidebar. For example, you can use it to group stories into sections. |
-| `parameters` | This is a metadata object that controls how Storybook renders the story. For example, you can use it to control the viewport, or to add a custom background to the story. |
-| `args` | This is an object that controls the initial state of your component. For example, you can use it to set the initial value of a toggle button. |
+| Property     | Description                                                                                                                                                                                                                                                                         |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`      | This is a string that controls how Storybook lists your stories in the sidebar. For example, you can use it to group stories into sections.                                                                                                                                         |
+| `parameters` | This is a metadata object that controls how Storybook renders the story. For example, you can use it to control the viewport, or to add a custom background to the story.                                                                                                           |
+| `args`       | This is an object that controls the initial state of your component. For example, you can use it to set the initial value of a toggle button.                                                                                                                                       |
 | `decorators` | Decorators are a mechanism to wrap a component in arbitrary markup when rendering a story. Components are often created with assumptions about ‘where’ they render. Your styles might expect a theme or layout wrapper, or your UI might expect specific context or data providers. |
-| `play` | Assign functions to test user interactions with your UI components and pages.|
+| `play`       | Assign functions to test user interactions with your UI components and pages.                                                                                                                                                                                                       |
 
 :::info
 If the properties are set on the default export, they apply to all stories in the file. If they are set on a named export, they apply only to that story. Any properties set on a named export override properties set on the default export.
@@ -92,15 +92,17 @@ If the properties are set on the default export, they apply to all stories in th
 
 #### Using parameters
 
-An example of using parameters is to control the viewport of the story. This is useful for testing responsive components and pages.
+An example of using parameters is to control the viewports of the story that Chromatic will track. This is useful for checking for visual regressions across responsive components and pages.
 
-```ts title="SignInPage.stories.ts|tsx"
+```ts title="sign-in.stories.tsx" {1,7}
+import { withChromaticModes } from "@acme/storybook-config";
+
 type Story = StoryObj<typeof SignInPage>;
 
-export const Default: Story = {};
-
-export const Mobile: Story = {
-  parameters: getMobileViewParameters(),
+export const Default: Story = {
+  parameters: {
+    ...withChromaticModes(["desktop", "tablet", "mobile"]),
+  },
 };
 ```
 
@@ -108,7 +110,7 @@ export const Mobile: Story = {
 
 If your component uses props, you can use the `args` property to control the initial state of your component. The below example shows how to use `args` to control the initial state of a button component.
 
-```tsx title="Button.stories.ts|tsx"
+```tsx title="button.stories.tsx"
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { Button } from "./Button";
@@ -156,30 +158,45 @@ Pass msw request [handlers](https://mswjs.io/docs/basics/request-handler) into t
 
 The below example shows the `SignInPage` story with a handler that handles the `me.get` tRPC procedure that gets invoked on the sign in page:
 
-```tsx title="SignInPage.stories.ts|tsx"
-import { mockTrpcErrorResponse, trpcMsw } from "../utils/mockTrpc";
+```tsx title="sign-in.stories.tsx" {1,8}
+import { authHandlers } from "~tests/msw/handlers/auth";
 
 const meta: Meta<typeof SignInPage> = {
   title: "Pages/Sign In Page",
   component: SignInPage,
   parameters: {
     msw: {
-      handlers: [
-        trpcMsw.me.get.query((_req, res, ctx) => {
-          return res(
-            ctx.status(401),
-            ctx.json(
-              mockTrpcErrorResponse(new TRPCError({ code: "UNAUTHORIZED" }))
-            )
-          );
-        }),
-      ],
+      handlers: [authHandlers.signIn.success()],
     },
   },
 };
 ```
 
-The utility functions to use tRPC with msw can be found in `src/stories/utils/mockTrpc.ts`.
+The handler could look like this:
+
+```ts title="~tests/msw/handlers/auth.ts"
+export const authHandlers = {
+  signIn: {
+    success: () =>
+      trpcMsw.auth.email.login.mutation(() => {
+        return {
+          email: "test@example.com",
+          otpPrefix: "TST",
+        };
+      }),
+    loading: () =>
+      trpcMsw.auth.email.login.mutation(async () => {
+        await delay("infinite");
+        return {
+          email: "never",
+          otpPrefix: "TST",
+        };
+      }),
+  },
+};
+```
+
+The utility functions to use tRPC with msw can be found in [`~/tests/msw/trpc-msw.ts`](https://github.com/opengovsg/starter-kit/blob/main/apps/web/tests/msw/trpc-msw.ts).
 
 :::note
 Recap: you can set the `paramters.msw` property on the default `meta` export to apply the msw handlers to all stories in the file, or on a named export to apply the msw handlers to only that story.
@@ -189,16 +206,13 @@ Recap: you can set the `paramters.msw` property on the default `meta` export to 
 
 Storybook also allows you to test user interactions with your UI components and pages. This is useful for testing user flows and user journeys, or to reach a specific state in your UI component or page (for visual regression testing).
 
-Storybook uses a wrapper on top of `testing-library` to test user interactions called [`@storybook/testing-library`](https://storybook.js.org/docs/react/writing-tests/interaction-testing).
-You can read more about `testing-library` [here](https://testing-library.com/docs/react-testing-library/intro/).
+Storybook uses a wrapper on top of `testing-library` to test user interactions called [`'storybook/test'`](https://storybook.js.org/docs/react/writing-tests/interaction-testing).
 
 This application provides an example of how to test user interactions with the `SignInPage` story, where we want to snapshot (and confirm) the error displayed when the user enters an invalid email address:
 
-```tsx title="SignInPage.stories.ts|tsx"
+```tsx title="sign-in.stories.tsx"
 export const InputValidation: Story = {
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ canvas, userEvent, step }) => {
     await step("Enter invalid email address", async () => {
       userEvent.type(await canvas.findByLabelText(/email/i), "test");
     });
