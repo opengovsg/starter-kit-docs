@@ -1,148 +1,413 @@
-# Project structure
+# Project Structure
 
-This is a general overview of the project structure. Further down, you will find a description of each entry.
+This document provides a comprehensive overview of the monorepo structure, explaining each directory and its purpose.
+
+## Overview
+
+This is a **[Turborepo](https://turborepo.com/docs)-powered monorepo** designed for building full-stack applications. It follows a modular architecture with shared packages, tooling configurations, and a Next.js web application.
 
 ```
-.
-├─ public
-│  └─ favicon.ico
-├─ prisma
-│  └─ schema.prisma
-├─ src
-│  ├─ env.mjs
-│  ├─ pages
-│  │  ├─ _app.tsx
-│  │  ├─ 404.tsx
-│  │  ├─ api
-│  │  │  └─ trpc
-│  │  │     └─ [trpc].ts
-│  │  └─ index.tsx
-│  ├─ lib
-│  ├─ schemas
-│  ├─ server
-│  │  ├─ prisma.ts
-│  │  ├─ context.ts
-│  │  ├─ trpc.ts
-│  │  ├─ _app.ts
-│  │  └─ modules
-│  │     └─ <example_feature>
-│  │        └─ <example>.router.ts
-│  ├─ theme
-│  │  └─ index.ts
-│  └─ utils
-│     └─ trpc.ts
-├─ .env
-├─ .env.example
-├─ .eslintrc.cjs
-├─ .gitignore
-├─ next-env.d.ts
-├─ next.config.js
-├─ package.json
-├─ README.md
-└─ tsconfig.json
+starter-kit/
+├── apps/           # Application workspaces
+├── packages/       # Shared libraries and utilities
+├── tooling/        # Shared development configurations
+├── turbo/          # Turborepo generators
+├── docs/           # Project documentation
+└── patches/        # Package patches (pnpm)
 ```
 
-## `prisma`
+---
 
-The `prisma` folder contains the `schema.prisma` file which is used to configure the database connection and the database schema. It is also the location to store migration files and/or seed scripts, if used. See [Prisma usage](./03-prisma.md) for more information.
+## Root Configuration Files
 
-### `public`
+| File                  | Purpose                                                                                  |
+| --------------------- | ---------------------------------------------------------------------------------------- |
+| `package.json`        | Root workspace configuration, shared scripts, and dev dependencies                       |
+| `pnpm-workspace.yaml` | Defines workspace packages (`apps/*`, `packages/*`, `tooling/*`) and dependency catalogs |
+| `turbo.json`          | Turborepo pipeline configuration for build, lint, test, and other tasks                  |
+| `docker-compose.yml`  | Local development services (PostgreSQL, Redis)                                           |
+| `vitest.config.ts`    | Root Vitest configuration for unit testing                                               |
 
-The `public` folder contains static assets that are served by the web server. The `favicon.ico` file is an example of a static asset.
+---
 
-### `src/pages`
+## Apps
 
-The `pages` folder contains all the pages of the Next.js application. The `index.tsx` file at the root directory of `/pages` is the homepage of the application. The `_app.tsx` file is used to wrap the application with providers. See [Next.js documentation](https://nextjs.org/docs/basic-features/pages) for more information.
+### `apps/web`
 
-#### `src/pages/api`
+The main Next.js application - a full-stack web app with tRPC for end-to-end type safety.
 
-The `api` folder contains all the API routes of the Next.js application. See [Next.js Api Routes Docs](https://nextjs.org/docs/api-routes/introduction) for info on api routes.
+```
+apps/web/
+├── src/
+│   ├── app/              # Next.js App Router pages and layouts
+│   │   ├── (authed)/     # Protected routes (requires authentication)
+│   │   ├── (public)/     # Public routes
+│   │   ├── _components/  # Shared app-level components
+│   │   ├── api/          # API routes (tRPC handler)
+│   │   ├── layout.tsx    # Root layout
+│   │   └── provider.tsx  # Client providers (React Query, etc.)
+│   │
+│   ├── server/           # Server-side code
+│   │   ├── api/          # tRPC router configuration
+│   │   │   ├── root.ts   # Root router combining all routers
+│   │   │   ├── trpc.ts   # tRPC context and procedures
+│   │   │   └── routers/  # Individual tRPC routers
+│   │   ├── modules/      # Business logic modules
+│   │   │   ├── auth/     # Authentication logic
+│   │   │   ├── user/     # User management
+│   │   │   ├── mail/     # Email services
+│   │   │   └── rate-limit/ # Rate limiting utilities
+│   │   ├── session.ts    # Session management (iron-session)
+│   │   └── utils/        # Server utilities
+│   │
+│   ├── trpc/             # tRPC client configuration
+│   │   ├── react.tsx     # React Query integration
+│   │   ├── server.tsx    # Server-side tRPC caller
+│   │   └── query-client.ts # React Query client config
+│   │
+│   ├── lib/              # Shared utilities
+│   │   ├── auth.ts       # Auth helpers
+│   │   ├── fonts.ts      # Font configuration
+│   │   └── pkce/         # PKCE utilities for OAuth
+│   │
+│   ├── stories/          # Storybook stories
+│   ├── types/            # TypeScript type definitions
+│   ├── utils/            # Client-side utilities
+│   ├── validators/       # Form/input validators
+│   ├── constants.ts      # App constants
+│   └── env.ts            # Environment variable validation (@t3-oss/env)
+│
+├── tests/                # Test files
+│   ├── msw/              # Mock Service Worker handlers
+│   ├── db/               # Database test utilities
+│   └── redis/            # Redis test utilities
+│
+└── public/               # Static assets
+```
 
-#### `src/pages/api/trpc/[trpc].ts`
+**Key technologies:**
 
-The `[trpc].ts` file is the tRPC API entrypoint. It is used to handle tRPC requests. See [tRPC usage](./04-trpc.md#-srcpagesapitrpctrpcts) for more information on this file, and [Next.js Dynamic Routes Docs](https://nextjs.org/docs/routing/dynamic-routes) for info on catch-all/slug routes.
+- **Next.js 15** with App Router and React 19
+- **tRPC v11** for type-safe API calls
+- **Tailwind CSS v4** for styling
+- **React Query** for server state management
+- **iron-session** for session management
+- **Storybook** for component development
 
-### `src/lib`
+---
 
-The `lib` folder contains service functions that are used throughout the application.
+## Packages
 
-### `src/schemas`
+Shared libraries consumed by applications in the monorepo.
 
-The `schemas` folder contains zod schema definitions for the application, which can be shared between the client and server with `tRPC` and `react-hook-form`. See [tRPC usage on the client](./04-trpc.md#on-the-client) for more information.
+### `packages/db`
 
-### `src/server`
+Database layer using Prisma ORM with multiple generators.
 
-The `server` folder is used to clearly separate server-side code from client-side code.
+```
+packages/db/
+├── prisma/
+│   ├── schema.prisma     # Database schema definition
+│   ├── migrations/       # Database migrations
+│   └── seed.ts           # Database seeding script
+├── src/
+│   ├── index.ts          # Main export (Prisma client)
+│   ├── client.ts         # Prisma client singleton
+│   ├── extensions.ts     # Prisma client extensions
+│   ├── kysely.ts         # Kysely query builder integration
+│   ├── enums.ts          # Database enums
+│   └── generated/        # Auto-generated files
+│       ├── prisma/       # Prisma client
+│       ├── zod/          # Zod validators from schema
+│       └── kysely/       # Kysely types
+```
 
-#### `src/server/modules/auth`
+**Exports:**
 
-This directory handles authentication logic.
+- `@acme/db` - Prisma client with extensions
+- `@acme/db/client` - Raw Prisma client
+- `@acme/db/validators` - Auto-generated Zod schemas and types
+- `@acme/db/kysely` - [Kysely](https://kysely.dev/docs/getting-started) query builder types
+- `@acme/db/enums` - Database enums
 
-#### `src/server/prisma.ts`
+**Key features:**
 
-The `prisma.ts` file is used to instantiate the Prisma client at global scope. See [Prisma usage](./03-prisma.md#prisma-client) and [best practices for using Prisma with Next.js](https://www.prisma.io/docs/guides/database/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices) for more information.
+- **Prisma** for type-safe database access
+- **prisma-zod-generator** for automatic Zod schema generation
+- **prisma-kysely** Allows the usage of [Kysely](https://kysely.dev/docs/getting-started) via Prisma extension for complex SQL queries with type safety
 
-#### `src/server/modules/<module>/*`
+---
 
-As a practice, this app colocates modules in their own directory. Each module contains:
+### `packages/ui`
 
-- `<module>.router.ts` file which is used to define the routes for that module.
-- `<module>.service.ts` which may also be used to define the business logic for that module.
-- `<module>.utils.ts` which may also be used to define utility functions for that module.
-- Or any other files that may be needed for that module.
+Shared UI component library built with React Aria Components and OUI design system.
 
-#### `src/server/modules/_app.ts`
+```
+packages/ui/
+├── src/
+│   ├── empty-placeholder.tsx  # Empty state component
+│   ├── link-button.tsx        # Link styled as button
+│   ├── text-field.tsx         # Form text input
+│   ├── toast.tsx              # Toast notifications (sonner)
+│   ├── infobox/               # Information box component
+│   ├── modal/                 # Modal dialog component
+│   ├── restricted-footer/     # Footer component
+│   └── svgs/                  # SVG icons and illustrations
+```
 
-The `_app.ts` file is used to merge tRPC routers and export them as a single router, as well as the router's type definition. See [tRPC usage](./04-trpc.md#-srcservermodules_appts) for more information.
+**Key technologies:**
 
-#### `src/server/trpc.ts`
+- **react-aria-components** for accessible components
+- **@opengovsg/oui** - OGP's UI library
+- **tailwind-variants** for variant-based styling
+- **sonner** for toast notifications
 
-The `trpc.ts` file is the main configuration file for your tRPC back-end. In here we export procedure helpers. See [tRPC usage](./04-trpc.md#-srcservertrpcts) for more information.
+---
 
-#### `src/server/context.ts`
+### `packages/validators`
 
-The context used in tRPC requests is defined in this file. See [tRPC usage](./04-trpc.md#-srcservercontextts) for more information.
+Shared Zod validation schemas used across the monorepo.
 
-### `src/theme`
+```
+packages/validators/
+└── src/
+    └── index.ts    # Shared validation schemas
+```
 
-The `theme` folder contains the theme configuration for the application client, using [`@opengovsg/design-system-react`](https://www.npmjs.com/package/@opengovsg/design-system-react). See [Application Theme](./07-application-theme.md) for more information.
+**Usage:** Define reusable validators for forms, API inputs, and data validation that can be shared between client and server if necessary.
 
-### `src/utils`
+---
 
-The `utils` folder is used to store commonly re-used utility functions.
+### `packages/redis`
 
-#### `src/utils/trpc.ts`
+Redis client wrapper for caching and session storage.
 
-The `trpc.ts` file is the front-end entrypoint to tRPC. See [tRPC usage](./04-trpc.md#-srcutilstrpcts) for more information.
+```
+packages/redis/
+└── src/
+    ├── index.ts    # Redis client export
+    └── env.ts      # Redis environment variables
+```
 
-### `src/env.mjs`
+**Usage:** Provides a configured Redis client for rate limiting, caching, and session storage.
 
-Used for environment variable validation and type definitions - see [Environment Variables](./08-env-variables.md).
+---
 
-### `.env`
+### `packages/common`
 
-The `.env` file is used to store environment variables. See [Environment Variables](./08-env-variables.md) for more information. This file should **not** be committed to git history.
+Shared utility functions used across the monorepo.
 
-### `.env.example`
+```
+packages/common/
+└── src/
+    └── format.ts   # Date/time formatting utilities (date-fns)
+```
 
-The `.env.example` file shows example environment variables based on the chosen libraries. This file should be committed to git history.
+**Exports:**
 
-### `.eslintrc.cjs`
+- `@acme/common/format` - Date formatting helpers with timezone support
 
-The `.eslintrc.cjs` file is used to configure ESLint. See [ESLint Docs](https://eslint.org/docs/latest/user-guide/configuring/configuration-files) for more information.
+---
 
-### `next-env.d.ts`
+## Tooling
 
-The `next-env.d.ts` file ensures Next.js types are picked up by the TypeScript compiler. **You should not remove it or edit it as it can change at any time.** See [Next.js Docs](https://nextjs.org/docs/basic-features/typescript#existing-projects) for more information.
+Shared development configurations for consistent tooling across all packages.
 
-### `next.config.js`
+### `tooling/eslint`
 
-The `next.config.js` file is used to configure Next.js. See [Next.js Docs](https://nextjs.org/docs/api-reference/next.config.js/introduction) for more information.
+Shared ESLint configurations with support for different project types.
 
-### `tsconfig.json`
+```
+tooling/eslint/
+├── base.js       # Base ESLint rules
+├── nextjs.js     # Next.js specific rules
+├── react.js      # React specific rules
+└── storybook.js  # Storybook specific rules
+```
 
-The `tsconfig.json` file is used to configure TypeScript. Some non-defaults, such as `strict mode`, have been enabled to ensure the best usage of TypeScript for this application and its libraries. See [TypeScript Docs](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) or [TypeScript Usage](./05-typescript.md) for more information.
+**Exports:**
 
-### `docker-compose.yml`
+- `@acme/eslint-config/base` - Base TypeScript rules
+- `@acme/eslint-config/nextjs` - Next.js app rules
+- `@acme/eslint-config/react` - React library rules
+- `@acme/eslint-config/storybook` - Storybook rules
 
-Strictly used for local development, spins up the necessary services for the application to run. See [Getting Started](https://github.com/opengovsg/starter-kit/blob/develop/README.md) for more information.
+---
+
+### `tooling/prettier`
+
+Shared Prettier configuration for consistent code formatting.
+
+```
+tooling/prettier/
+└── index.js      # Prettier config with plugins
+```
+
+**Features:**
+
+- Import sorting with `@ianvs/prettier-plugin-sort-imports`
+- Tailwind class sorting with `prettier-plugin-tailwindcss`
+
+---
+
+### `tooling/tailwind`
+
+Shared Tailwind CSS configuration and theme.
+
+```
+tooling/tailwind/
+├── theme.css         # Custom theme CSS variables
+└── postcss-config.js # PostCSS configuration
+```
+
+**Exports:**
+
+- `@acme/tailwind-config/theme` - Theme CSS
+- `@acme/tailwind-config/postcss-config` - PostCSS config for Tailwind v4
+
+---
+
+### `tooling/typescript`
+
+Shared TypeScript configurations.
+
+```
+tooling/typescript/
+├── base.json              # Base tsconfig
+└── compiled-package.json  # Config for compiled packages
+```
+
+**Usage:** Extend from these configs in package `tsconfig.json` files:
+
+```json
+{
+  "extends": "@acme/tsconfig/base.json"
+}
+```
+
+---
+
+### `tooling/storybook`
+
+Shared Storybook configuration and utilities.
+
+```
+tooling/storybook/
+└── src/
+    ├── index.ts              # Main exports
+    ├── modes.ts              # Theme modes
+    ├── viewports.ts          # Viewport presets
+    └── withChromaticModes.ts # Chromatic testing utilities
+```
+
+**Usage:** Provides consistent Storybook configuration for visual regression testing with Chromatic.
+
+---
+
+### `tooling/github`
+
+GitHub Actions setup utilities.
+
+```
+tooling/github/
+└── setup/
+    └── action.yml    # Reusable setup action
+```
+
+**Usage:** Shared GitHub Actions workflow for CI setup (pnpm, caching, etc.).
+
+---
+
+## Turbo Generators
+
+Package scaffolding generators using Turborepo.
+
+```
+turbo/generators/
+├── config.ts       # Generator configuration
+└── templates/      # Template files
+    ├── eslint.config.js.hbs
+    ├── package.json.hbs
+    └── tsconfig.json.hbs
+```
+
+**Usage:** Generate a new package:
+
+```bash
+pnpm turbo gen init
+```
+
+This will scaffold a new package in `packages/` with proper configuration files.
+
+---
+
+## Docker Services
+
+The `docker-compose.yml` provides local development services:
+
+| Service    | Port  | Purpose                          |
+| ---------- | ----- | -------------------------------- |
+| PostgreSQL | 54321 | Primary database                 |
+| Redis      | 63791 | Caching, rate limiting, sessions |
+
+**Start services:**
+
+```bash
+docker compose up -d
+```
+
+---
+
+## Key Scripts
+
+| Script            | Description                        |
+| ----------------- | ---------------------------------- |
+| `pnpm dev`        | Start all apps in development mode |
+| `pnpm build`      | Build all packages and apps        |
+| `pnpm lint`       | Run ESLint across all packages     |
+| `pnpm format:fix` | Format code with Prettier          |
+| `pnpm typecheck`  | Run TypeScript type checking       |
+| `pnpm test`       | Run unit tests with Vitest         |
+| `pnpm db:push`    | Push Prisma schema to database     |
+| `pnpm db:studio`  | Open Prisma Studio                 |
+| `pnpm db:migrate` | Run database migrations            |
+
+---
+
+## Dependency Management
+
+This monorepo uses **pnpm workspaces** with **catalogs** for consistent dependency versions:
+
+```yaml
+# pnpm-workspace.yaml
+catalog:
+  typescript: ^5.9.3
+  zod: ^4.1.13
+  # ... other shared versions
+```
+
+Reference catalog versions in `package.json`:
+
+```json
+{
+  "dependencies": {
+    "zod": "catalog:"
+  }
+}
+```
+
+---
+
+## Environment Variables
+
+Environment variables are validated using `@t3-oss/env`:
+
+- `.env.example` - Template with all required variables
+- `.env.local` - Local development overrides (gitignored)
+
+Key variables:
+
+- `DATABASE_URL` - PostgreSQL connection string
+- `REDIS_URL` - Redis connection string
+- `SESSION_SECRET` - Secret for session encryption
+- `POSTMAN_API_KEY` - (Optional) For sending emails via Postman
