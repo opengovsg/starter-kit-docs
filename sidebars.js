@@ -11,6 +11,7 @@ const sidebars = {
     {
       type: "category",
       label: "Getting Started",
+      collapsed: false,
       link: {
         type: "generated-index",
         title: "Getting Started",
