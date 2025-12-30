@@ -12,7 +12,7 @@ You will find the Prisma schema file at `packages/db/prisma/schema.prisma`. This
 
 ## Default Database
 
-The default database in this application uses [Neon](./06-neon.md). You can change the database to use by changing the `provider` in the `datasource` to the database of your choice, and then updating the connection string within environment variables to point to your database.
+The default database in this application uses [Neon](https://neon.com/). You can change the database to use by changing the `provider` in the `datasource` to the database of your choice, and then updating the connection string within environment variables to point to your database.
 
 ## Seeding your Database
 
